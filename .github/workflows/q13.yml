@@ -49,7 +49,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npm ci --prefix "$Q13_DIR"
+          if [[ -f "$Q13_DIR/package-lock.json" ]]; then
+            npm ci --prefix "$Q13_DIR"
+          else
+            npm install --prefix "$Q13_DIR"
+          fi
 
       - name: Install Playwright Chromium
         shell: bash
