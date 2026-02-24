@@ -1,0 +1,36 @@
+name: Question 13 - Playwright Table Sum
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/question13-playwright.yml"
+      - "Question 13/**"
+
+jobs:
+  table-sum:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: Question 13
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+        working-directory: Question 13
+
+      - name: Run scraper for 24f2008474@ds.study.iitm.ac.in
+        run: node sum_tables.js
+        working-directory: Question 13
+        env:
+          # https://your-domain/path?seed={seed}
+          SEED_URL_TEMPLATE: https://sanand0.github.io/tdsdata/js_table/?seed={seed}
